@@ -22,7 +22,7 @@ describe('Scorecard',function(){
       expect(scorecard.currentFrameIndex).toEqual(1);
     });
 
-    it('should increase currentFrameIndex after 1 strike',function(){
+    it('should increase currentFrameIndex after 1 strike', function(){
       scorecard.updateList(10);
       expect(scorecard.currentFrameIndex).toEqual(1);
     });
@@ -38,5 +38,16 @@ describe('Scorecard',function(){
       expect(scorecard.list[0].currentScore).toEqual(0);
     });
 
+  });
+
+  describe('#sum',function(){
+    it('should update CurrentSum with #currentScores of each non-strike/spare', function() {
+      scorecard.updateList(4);
+      scorecard.updateList(4);
+      scorecard.updateList(4);
+      scorecard.updateList(4);
+      scorecard.sum();
+      expect(scorecard.currentSum).toEqual(16);
+    });
   });
 });

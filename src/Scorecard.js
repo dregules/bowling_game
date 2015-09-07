@@ -8,32 +8,43 @@ function Scorecard () {
 
 Scorecard.prototype.sum = function() {
   this.currentSum = 0;
+  var scorecardIndex = this.currentFrameIndex;
+
   var isSpare = function(bowlingFrame){
     return (bowlingFrame.subFrame[one] +
     bowlingFrame.subFrame[two]) === 10 && bowlingFrame.subFrame[one] > 0;
   };
 
-  var calculate = function() {
-    for (var i = 0; i < this.currentFrameIndex - 2; i++) {
-      if(this.list[i].subFrame[two] === 10 && i < 10) {
-        this.sumStrikes(i);
-        this.currentSum += this.list[i].currentScore;
-        this.list[i].currentScore = this.currentSum;
-        continue;
-        }
-      if(isSpare(this.list[i]) === true && i + 1 < this.list.length) {
-        this.sumSpares(i);
-        this.currentSum += this.list[i].currentScore;
-        this.list[i].currentScore = this.currentSum;
-        continue;
-      }
-
-      this.list[i].currentScore += this.currentSum;
-      this.list[i].score();
-      this.currentSum = this.list[i].currentScore;
-    };
-    calculate();
+  this.calculate = function() {
+    if (scorecardIndex < 0) {return};
+    this.currentSum += this.list[scorecardIndex].currentScore;
+    scorecardIndex--;
+    this.calculate();
   };
+  this.calculate();
+  // this.calculate(this);
+
+
+  // var calculate = function() {
+  //   for (var i = 0; i < this.currentFrameIndex - 2; i++) {
+  //     if(this.list[i].subFrame[two] === 10 && i < 10) {
+  //       this.sumStrikes(i);
+  //       this.currentSum += this.list[i].currentScore;
+  //       this.list[i].currentScore = this.currentSum;
+  //       continue;
+  //       }
+  //     if(isSpare(this.list[i]) === true && i + 1 < this.list.length) {
+  //       this.sumSpares(i);
+  //       this.currentSum += this.list[i].currentScore;
+  //       this.list[i].currentScore = this.currentSum;
+  //       continue;
+  //     }
+
+  //     this.list[i].currentScore += this.currentSum;
+  //     this.list[i].score();
+  //     this.currentSum = this.list[i].currentScore;
+  //   };
+  // };
 };
 
 Scorecard.prototype.updateList = function (NumberOfPins) {
